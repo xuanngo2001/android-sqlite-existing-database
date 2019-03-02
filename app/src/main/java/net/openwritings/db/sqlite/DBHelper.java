@@ -23,9 +23,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     private void copyDbIfNotExists()
     {
+        // Ensure /data/data/YOUR_PACKAGE_NAME/databases/ directory is created.
+        File dbDir = new File(context.getDatabasePath(dbName).getParentFile().getPath());
+        if (!dbDir.exists())
+            dbDir.mkdir();
+
+        // Copy database starts here.
         String appDbPath = this.context.getDatabasePath(dbName).getAbsolutePath();
         File dbFile = new File(appDbPath);
-
         if(!dbFile.exists()){
             try {
                 InputStream mInput = context.getAssets().open("myExistingDb.db");
